@@ -1,0 +1,34 @@
+package rules
+ 
+import model.*
+
+rule "Print Sensor Output"
+	when 
+		$message: DeviceMessage()
+	then
+		System.out.println("Device Name: " + $message.getDeviceName() +
+		". Sequence Number: " + $message.getMessageSequence() +
+		". Output: " + $message.getMessageContent());
+	end
+
+rule "Compute Average of Sensor Output"
+   when
+       $average : Number( doubleValue > 50 )
+           from accumulate ( DeviceMessage($val : messageContent ), average($val) )
+   then
+       System.out.println("Average of Sensor Reading gone up above 50 : " + $average.intValue());
+   end
+
+rule "Find Anomaly in Sensor Output (if output = 2 * average)"
+   when
+       $message: DeviceMessage()
+       $average : Number()
+           from accumulate ( DeviceMessage($val : messageContent ), average($val) )
+       eval ($message.getMessageContent() > 2*$average.intValue())
+   then
+       System.out.println("Sensor Reading for sequence "
+       + $message.getMessageSequence() + " of device "
+       + $message.getDeviceName() + " is more than twice of the current average. ");
+   end
+
+
