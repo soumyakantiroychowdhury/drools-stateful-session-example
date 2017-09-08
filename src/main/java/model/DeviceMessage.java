@@ -1,8 +1,5 @@
 package model;
 
-/**
- * Created by SoumyaKanti on 13-Jun-17.
- */
 public class DeviceMessage {
     private String deviceName;
     private int messageSequence;
