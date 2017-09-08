@@ -11,7 +11,7 @@ rule "Print Sensor Output"
 		". Output: " + $message.getMessageContent());
 	end
 
-rule "Compute Average of Sensor Output"
+rule "Compute Average of Sensor Outputs"
    when
        $average : Number( doubleValue > 50 )
            from accumulate ( DeviceMessage($val : messageContent ), average($val) )
@@ -19,7 +19,7 @@ rule "Compute Average of Sensor Output"
        System.out.println("Average of Sensor Reading gone up above 50 : " + $average.intValue());
    end
 
-rule "Find Anomaly in Sensor Output (if output = 2 * average)"
+rule "Find Anomaly in Sensor Outputs (if output = 2 * average)"
    when
        $message: DeviceMessage()
        $average : Number()
